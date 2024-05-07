@@ -6,6 +6,10 @@
 ```
 python TrainBDT.py --data ../../../../data/skimmer/24Mar2_v12_signal --year 2022EE --model-name v0_msd30
 ```
+- 24Apr20_legacy_fix
+```
+python -W ignore TrainBDT.py --data-path /ceph/cms/store/user/rkansal/bbbb/skimmer/24Apr23LegacyLowerThresholds_v12_private_signal/ --model-name 24Apr20_legacy_fix --legacy --sig-keys hh4b --no-pnet-plots --evaluate-only --xbb bbFatJetPNetTXbbLegacy --mass bbFatJetPNetMassLegacy --legacy
+```
 
 - 24Apr21_legacy_vbf_vars
 ```
@@ -30,4 +34,10 @@ python -W ignore TrainBDT.py --data-path /ceph/cms/store/user/rkansal/bbbb/skimm
 - 24May1_legacy_vbf_vars
 ```
 python -W ignore TrainBDT.py --data-path /ceph/cms/store/user/rkansal/bbbb/skimmer/24Apr23LegacyLowerThresholds_v12_private_signal/ --model-name 24May1_legacy_vbf_vars --xbb bbFatJetPNetTXbbLegacy --mass bbFatJetPNetMassLegacy --legacy --pnet-plots --apply-cuts --config 24Apr21_legacy_vbf_vars --year 2022 2022EE 2023 2023BPix --sig-keys hh4b vbfhh4b-k2v0
+```
+
+- 24May7_legacy_vbf_vars
+Trained w/o 2023 TSG
+```
+python -W ignore TrainBDT.py --data-path /ceph/cms/store/user/rkansal/bbbb/skimmer/24Apr23LegacyLowerThresholds_v12_private_signal/ --model-name 24May7_legacy_vbf_vars --xbb bbFatJetPNetTXbbLegacy --mass bbFatJetPNetMassLegacy --legacy --pnet-plots --apply-cuts --config 24Apr21_legacy_vbf_vars --year 2022 2022EE 2023 2023BPix --sig-keys hh4b vbfhh4b-k2v0
 ```

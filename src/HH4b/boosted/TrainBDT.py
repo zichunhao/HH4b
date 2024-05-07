@@ -45,7 +45,7 @@ cut_axis = hist.axis.StrCategory([], name="cut", label="cut", growth=True)
 h2_msd_axis = hist.axis.Regular(18, 40, 220, name="mass", label=r"Higgs 2 m$_{SD}$ [GeV]")
 h2_mass_axis = hist.axis.Regular(18, 40, 220, name="mass", label=r"Higgs 2 m$_{reg}$ [GeV]")
 
-bdt_cuts = [0, 0.03, 0.68, 0.94]
+bdt_cuts = [0, 0.03, 0.68, 0.94]  # , 0.98]
 xbb_cuts = [0, 0.8, 0.9, 0.98]
 
 control_plot_vars = [
