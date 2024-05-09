@@ -59,17 +59,17 @@ control_plot_vars = [
     ShapeVar(var="HHEta", label=r"HH $\eta$", bins=[30, -5, 5]),
     ShapeVar(var="HHMass", label=r"HH mass (GeV)", bins=[30, 0, 1500]),
     ShapeVar(var="MET", label=r"MET (GeV)", bins=[30, 0, 600]),
-    ShapeVar(var="H1T32", label=r"$\tau_{32}^{0}$", bins=[30, 0, 1]),
-    ShapeVar(var="H2T32", label=r"$\tau_{32}^{1}$", bins=[30, 0, 1]),
-    ShapeVar(var="H1Pt", label=r"H $p_{T}^{0}$ (GeV)", bins=[30, 200, 1000]),
-    ShapeVar(var="H2Pt", label=r"H $p_{T}^{1}$ (GeV)", bins=[30, 200, 1000]),
-    ShapeVar(var="H1Eta", label=r"H $\eta^{0}$", bins=[30, -4, 4]),
+    ShapeVar(var="H1T32", label=r"$\tau_{32}^{1}$", bins=[30, 0, 1]),
+    ShapeVar(var="H2T32", label=r"$\tau_{32}^{2}$", bins=[30, 0, 1]),
+    ShapeVar(var="H1Pt", label=r"H $p_{T}^{1}$ (GeV)", bins=[30, 200, 1000]),
+    ShapeVar(var="H2Pt", label=r"H $p_{T}^{2}$ (GeV)", bins=[30, 200, 1000]),
+    ShapeVar(var="H1Eta", label=r"H $\eta^{1}$", bins=[30, -4, 4]),
     ShapeVar(var="H1QCDb", label=r"QCDb$^{1}$", bins=[30, 0, 1]),
     ShapeVar(var="H1QCDbb", label=r"QCDbb$^{1}$", bins=[30, 0, 1]),
     ShapeVar(var="H1QCDothers", label=r"QCDothers$^{1}$", bins=[30, 0, 1]),
-    ShapeVar(var="H1Pt_HHmass", label=r"H$^0$ $p_{T}/mass$", bins=[30, 0, 1]),
-    ShapeVar(var="H2Pt_HHmass", label=r"H$^1$ $p_{T}/mass$", bins=[30, 0, 0.7]),
-    ShapeVar(var="H1Pt/H2Pt", label=r"H$^0$/H$^1$ $p_{T}$ (GeV)", bins=[30, 0.5, 1]),
+    ShapeVar(var="H1Pt_HHmass", label=r"H$^1$ $p_{T}/mass$", bins=[30, 0, 1]),
+    ShapeVar(var="H2Pt_HHmass", label=r"H$^2$ $p_{T}/mass$", bins=[30, 0, 0.7]),
+    ShapeVar(var="H1Pt/H2Pt", label=r"H$^1$/H$^2$ $p_{T}$ (GeV)", bins=[30, 0.5, 1]),
 ]
 
 # do not include small qcd bins
@@ -87,8 +87,8 @@ for year in samples_run3:
 
 
 def get_legtitle(legacy, pnet_xbb_str):
-    title = r"FatJet p$_T^{(0,1)}$ > 300 GeV" + "\n" + "$T_{Xbb}^{0}$>0.8"
-    title += "\n" + r"m$_{SD}^{0}$ > 40 GeV"
+    title = r"FatJet p$_T^{(1,2)}$ > 300 GeV" + "\n" + "$T_{Xbb}^{1}$>0.8"
+    title += "\n" + r"m$_{SD}^{1}$ > 40 GeV"
     if "Legacy" in pnet_xbb_str:
         title += "\n" + "PNet Legacy"
 
