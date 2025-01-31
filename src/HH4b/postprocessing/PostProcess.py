@@ -443,6 +443,11 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
         bdt_events["H2TXbb"] = events_dict[txbb_strings[args.txbb]][1]
         bdt_events["H1PNetMass"] = events_dict[mreg_strings[args.txbb]][0]
         bdt_events["H2PNetMass"] = events_dict[mreg_strings[args.txbb]][1]
+        
+        bdt_events["ak8FatJet1TXbb"] = events_dict["ak8FatJetParTTXbb"][0]
+        bdt_events["ak8FatJet2TXbb"] = events_dict["ak8FatJetParTTXbb"][1]
+        bdt_events["ak8FatJet3TXbb"] = events_dict["ak8FatJetParTTXbb"][2]
+
         if key in hh_vars.jmsr_keys:
             for jshift in hh_vars.jmsr_shifts:
                 bdt_events[f"H1PNetMass_{jshift}"] = events_dict[
@@ -844,9 +849,14 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
         # keep some (or all) columns
         columns = [
             "Category",
+            "H1Pt",
+            "H2Pt",
+            "H1Msd",
             "H2Msd",
             "bdt_score",
+            "H1TXbb",
             "H2TXbb",
+            "H1PNetMass",
             "H2PNetMass",
             "weight",
             "event",
@@ -886,7 +896,8 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
             events_dict_postprocess[key] = bdt_events
             columns_by_key[key] = columns
         else:
-            events_dict_postprocess[key] = bdt_events[columns]
+            # events_dict_postprocess[key] = bdt_events[columns]
+            events_dict_postprocess[key] = bdt_events  # take all for now
 
         # blind!!
         if key == "data":
