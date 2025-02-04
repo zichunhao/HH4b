@@ -280,6 +280,9 @@ def trigger_SF(year: str, events_dict: dict[str, pd.DataFrame], txbb_str: str, r
 
             eff_data_per_jet[jet][var] = eff_data_val * eff_data_btag_val
             eff_mc_per_jet[jet][var] = eff_mc_val * eff_mc_btag_val
+            # NOTE: modified to exclude btag eff
+            # eff_data_per_jet[jet][var] = eff_data_val 
+            # eff_mc_per_jet[jet][var] = eff_mc_val
 
         sf_per_jet = eff_data_per_jet[jet]["nominal"] / eff_mc_per_jet[jet]["nominal"]
         sf_err_per_jet = sf_per_jet * np.sqrt(

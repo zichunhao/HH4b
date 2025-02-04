@@ -108,7 +108,13 @@ columns_to_load = {
     ],
     "glopart-v2": columns_to_load_default
     + [
+        ("ak8FatJetEta", 3),
+        ("ak8FatJetPhi", 3),
+        ("ak8FatJetPt", 3),
+        ("ak8FatJetMsd", 3),
         ("ak8FatJetParTTXbb", 3),
+        ("ak8FatJetParTmassRes", 3),
+        ("ak8FatJetParTmassVis", 3),
         ("bbFatJetParTTXbb", 2),
         ("bbFatJetParTPXbb", 2),
         ("bbFatJetParTmassVis", 2),

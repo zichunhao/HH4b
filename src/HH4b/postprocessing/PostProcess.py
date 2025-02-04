@@ -444,9 +444,28 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
         bdt_events["H1PNetMass"] = events_dict[mreg_strings[args.txbb]][0]
         bdt_events["H2PNetMass"] = events_dict[mreg_strings[args.txbb]][1]
         
-        bdt_events["ak8FatJet1TXbb"] = events_dict["ak8FatJetParTTXbb"][0]
-        bdt_events["ak8FatJet2TXbb"] = events_dict["ak8FatJetParTTXbb"][1]
-        bdt_events["ak8FatJet3TXbb"] = events_dict["ak8FatJetParTTXbb"][2]
+        if "glopart" in args.txbb:
+            bdt_events["ak8FatJet1Eta"] = events_dict["ak8FatJetEta"][0]
+            bdt_events["ak8FatJet2Eta"] = events_dict["ak8FatJetEta"][1]
+            bdt_events["ak8FatJet3Eta"] = events_dict["ak8FatJetEta"][2]
+            bdt_events["ak8FatJet1Phi"] = events_dict["ak8FatJetPhi"][0]
+            bdt_events["ak8FatJet2Phi"] = events_dict["ak8FatJetPhi"][1]
+            bdt_events["ak8FatJet3Phi"] = events_dict["ak8FatJetPhi"][2]
+            bdt_events["ak8FatJet1Pt"] = events_dict["ak8FatJetPt"][0]
+            bdt_events["ak8FatJet2Pt"] = events_dict["ak8FatJetPt"][1]
+            bdt_events["ak8FatJet3Pt"] = events_dict["ak8FatJetPt"][2]
+            bdt_events["ak8FatJet1Msd"] = events_dict["ak8FatJetMsd"][0]
+            bdt_events["ak8FatJet2Msd"] = events_dict["ak8FatJetMsd"][1]
+            bdt_events["ak8FatJet3Msd"] = events_dict["ak8FatJetMsd"][2]
+            bdt_events["ak8FatJet1TXbb"] = events_dict["ak8FatJetParTTXbb"][0]
+            bdt_events["ak8FatJet2TXbb"] = events_dict["ak8FatJetParTTXbb"][1]
+            bdt_events["ak8FatJet3TXbb"] = events_dict["ak8FatJetParTTXbb"][2]
+            bdt_events["ak8FatJet1massRes"] = events_dict["ak8FatJetParTmassRes"][0]
+            bdt_events["ak8FatJet2massRes"] = events_dict["ak8FatJetParTmassRes"][1]
+            bdt_events["ak8FatJet3massRes"] = events_dict["ak8FatJetParTmassRes"][2]
+            bdt_events["ak8FatJet1massVis"] = events_dict["ak8FatJetParTmassVis"][0]
+            bdt_events["ak8FatJet2massVis"] = events_dict["ak8FatJetParTmassVis"][1]
+            bdt_events["ak8FatJet3massVis"] = events_dict["ak8FatJetParTmassVis"][2]
 
         if key in hh_vars.jmsr_keys:
             for jshift in hh_vars.jmsr_shifts:
@@ -701,6 +720,7 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
                 ] = (bdt_events["weight"] * tempw_dn / tempw)
 
         if key != "data":
+            bdt_events["trigger_weight"] = trigger_weight
             bdt_events["weight_triggerUp"] = (
                 bdt_events["weight"] * trigger_weight_up / trigger_weight
             )
@@ -864,6 +884,19 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
             "luminosityBlock",
             "year",
         ]
+        if "glopart" in args.txbb:
+            for i in range(1, 4):
+                columns += [
+                    f"ak8FatJet{i}Eta",
+                    f"ak8FatJet{i}Phi",
+                    f"ak8FatJet{i}Pt",
+                    f"ak8FatJet{i}Msd",
+                    f"ak8FatJet{i}TXbb",
+                    f"ak8FatJet{i}massRes",
+                    f"ak8FatJet{i}massVis",
+                ]
+            if key != "data":
+                columns.append("trigger_weight")
         for jshift in jshifts:
             columns += [
                 check_get_jec_var("Category", jshift),
@@ -896,8 +929,8 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
             events_dict_postprocess[key] = bdt_events
             columns_by_key[key] = columns
         else:
-            # events_dict_postprocess[key] = bdt_events[columns]
-            events_dict_postprocess[key] = bdt_events  # take all for now
+            events_dict_postprocess[key] = bdt_events[columns]
+            # events_dict_postprocess[key] = bdt_events  # take all for now
 
         # blind!!
         if key == "data":
