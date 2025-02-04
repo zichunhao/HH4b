@@ -1,7 +1,11 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd $SCRIPT_DIR/HH4b/src/HH4b/postprocessing
+cd $SCRIPT_DIR;
+cd ../../../../;
+HH4b_dir=$(pwd);
+pip install -e .;
+cd ${HH4b_dir}/src/HH4b/postprocessing;
 
 OUTPUT_DIR="${SCRIPT_DIR}/events"
 mkdir -p ${OUTPUT_DIR}
