@@ -252,9 +252,10 @@ def main(args):
     # tag = "24Sep19_v12v2_private_pre-sel"
     # w/o trigger selection
     tag = "24Sep27_v12v2_private_pre-sel"
-    year = "2022"
+    year = args.year
     outdir = "24Dec13"  # date of plotting
-    plot_dir = f"/uscms/home/cmantill/nobackup/hh/HH4b/plots/PostProcessing/{outdir}/{year}"
+    # plot_dir = f"/uscms/home/cmantill/nobackup/hh/HH4b/plots/PostProcessing/{outdir}/{year}"
+    plot_dir = Path(args.plot_dir)
     _ = os.system(f"mkdir -p {plot_dir}")
     path_to_dir = f"{MAIN_DIR}/{tag}/"
 
@@ -366,5 +367,7 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument("--mreg-cut", help="mreg cut split by ,", default="")
+    parser.add_argument("--year", help="year to plot", default="2022")
+    parser.add_argument("--plot-dir", help="directory to save plots", default="validate_ak8_tagging")
     args = parser.parse_args()
     sys.exit(main(args))
