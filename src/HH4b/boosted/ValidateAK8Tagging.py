@@ -26,7 +26,14 @@ use_ttbar = False
 
 
 def load_events(
-    path_to_dir, year, jet_collection, pt_cut, msd_cut, jet_coll_pnet, match_higgs, num_jets
+    path_to_dir,
+    year,
+    jet_collection,
+    pt_cut,
+    msd_cut,
+    jet_coll_pnet,
+    match_higgs,
+    num_jets,
 ):
     sample_dirs = {
         year: {
@@ -60,18 +67,36 @@ def load_events(
         ("weight", 1),  # genweight * otherweights
         (f"{jet_collection}Pt", num_jets),
         (f"{jet_collection}Msd", num_jets),
-        (f"{jet_collection}PNetMassLegacy", num_jets),  # ParticleNet Legacy regressed mass
-        (f"{jet_collection}PNetTXbb", num_jets),  # ParticleNet 130x bb vs QCD discriminator
-        (f"{jet_collection}PNetTXbbLegacy", num_jets),  # ParticleNet Legacy bb vs QCD discriminator
+        (
+            f"{jet_collection}PNetMassLegacy",
+            num_jets,
+        ),  # ParticleNet Legacy regressed mass
+        (
+            f"{jet_collection}PNetTXbb",
+            num_jets,
+        ),  # ParticleNet 130x bb vs QCD discriminator
+        (
+            f"{jet_collection}PNetTXbbLegacy",
+            num_jets,
+        ),  # ParticleNet Legacy bb vs QCD discriminator
         (f"{jet_collection}ParTTXbb", num_jets),  # GloParTv2 bb vs QCD discriminator
     ]
 
     # additional columns for matching hh4b jets
     signal_exclusive_columns = (
         [
-            (f"{jet_collection}HiggsMatchIndex", num_jets),  # index of higgs matched to jet
-            (f"{jet_collection}NumBMatchedH1", num_jets),  # number of bquarks matched to H1
-            (f"{jet_collection}NumBMatchedH2", num_jets),  # number of bquarks matched to H2
+            (
+                f"{jet_collection}HiggsMatchIndex",
+                num_jets,
+            ),  # index of higgs matched to jet
+            (
+                f"{jet_collection}NumBMatchedH1",
+                num_jets,
+            ),  # number of bquarks matched to H1
+            (
+                f"{jet_collection}NumBMatchedH2",
+                num_jets,
+            ),  # number of bquarks matched to H2
         ]
         if match_higgs
         else []
@@ -207,8 +232,14 @@ def get_roc(
         if mreg_cut:
             events_dict_masked = {
                 key: events[
-                    (events[f"{jet_collection}PNetMassLegacy"][jet_index] >= mreg_cut[0])
-                    & (events[f"{jet_collection}PNetMassLegacy"][jet_index] <= mreg_cut[1])
+                    (
+                        events[f"{jet_collection}PNetMassLegacy"][jet_index]
+                        >= mreg_cut[0]
+                    )
+                    & (
+                        events[f"{jet_collection}PNetMassLegacy"][jet_index]
+                        <= mreg_cut[1]
+                    )
                 ]
                 for key, events in events_dict.items()
             }
@@ -247,11 +278,13 @@ def main(args):
     # jet_coll_pnet = "PNetTXbb"
     # match_higgs = False
 
-    MAIN_DIR = "/eos/uscms/store/user/cmantill/bbbb/skimmer/"
+    # MAIN_DIR = "/eos/uscms/store/user/cmantill/bbbb/skimmer/"
+    MAIN_DIR = args.data_dir
     # w trigger selection
     # tag = "24Sep19_v12v2_private_pre-sel"
     # w/o trigger selection
-    tag = "24Sep27_v12v2_private_pre-sel"
+    # tag = "24Sep27_v12v2_private_pre-sel"
+    tag = args.tag
     year = args.year
     outdir = "24Dec13"  # date of plotting
     # plot_dir = f"/uscms/home/cmantill/nobackup/hh/HH4b/plots/PostProcessing/{outdir}/{year}"
@@ -261,7 +294,12 @@ def main(args):
 
     pt_cut = [int(x) for x in args.pt_cut.split(",")]
     msd_cut = [int(x) for x in args.msd_cut.split(",")]
-    cut_str = "pt" + "-".join(str(x) for x in pt_cut) + "msd" + "-".join(str(x) for x in msd_cut)
+    cut_str = (
+        "pt"
+        + "-".join(str(x) for x in pt_cut)
+        + "msd"
+        + "-".join(str(x) for x in msd_cut)
+    )
     legtitle = (
         rf"{pt_cut[0]} < $p_T$ < {pt_cut[1]} GeV"
         + "\n"
@@ -269,9 +307,16 @@ def main(args):
         + r" < $m_{SD}$ <"
         + f" {msd_cut[1]} GeV"
     )
-    mreg_cut = None if args.mreg_cut == "" else [int(x) for x in args.mreg_cut.split(",")]
+    mreg_cut = (
+        None if args.mreg_cut == "" else [int(x) for x in args.mreg_cut.split(",")]
+    )
     if mreg_cut:
-        legtitle += "\n " + f"{mreg_cut[0]} <" + r" $m_{reg}$ (Legacy) <" + f" {mreg_cut[1]} GeV"
+        legtitle += (
+            "\n "
+            + f"{mreg_cut[0]} <"
+            + r" $m_{reg}$ (Legacy) <"
+            + f" {mreg_cut[1]} GeV"
+        )
         cut_str += "mregleg" + "-".join(str(x) for x in mreg_cut)
 
     num_jets = 1
@@ -279,7 +324,14 @@ def main(args):
     # num_jets = 2
     # jets = [ [0,1], [0], [1] ]
     events_dict = load_events(
-        path_to_dir, year, jet_collection, pt_cut, msd_cut, jet_coll_pnet, match_higgs, num_jets
+        path_to_dir,
+        year,
+        jet_collection,
+        pt_cut,
+        msd_cut,
+        jet_coll_pnet,
+        match_higgs,
+        num_jets,
     )
 
     for jet_indices in jets:
@@ -367,7 +419,17 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument("--mreg-cut", help="mreg cut split by ,", default="")
+    parser.add_argument(
+        "--data-dir",
+        help="main directory that contains the data",
+        default="/eos/uscms/store/user/cmantill/bbbb/skimmer/",
+    )
     parser.add_argument("--year", help="year to plot", default="2022")
-    parser.add_argument("--plot-dir", help="directory to save plots", default="validate_ak8_tagging")
+    parser.add_argument(
+        "--tag", help="tag dir", default="24Sep27_v12v2_private_pre-sel"
+    )
+    parser.add_argument(
+        "--plot-dir", help="directory to save plots", default="validate_ak8_tagging"
+    )
     args = parser.parse_args()
     sys.exit(main(args))
