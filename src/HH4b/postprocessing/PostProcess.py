@@ -445,6 +445,13 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
         bdt_events["H2PNetMass"] = events_dict[mreg_strings[args.txbb]][1]
         
         if "glopart" in args.txbb:
+            if "ak8FatJetHiggsMatch" in events_dict:
+                bdt_events["ak8FatJet1HiggsMatch"] = events_dict["ak8FatJetHiggsMatch"][0]
+                bdt_events["ak8FatJet2HiggsMatch"] = events_dict["ak8FatJetHiggsMatch"][1]
+                bdt_events["ak8FatJet1NumBMatchedH1"] = events_dict["ak8FatJetNumBMatchedH1"][0]
+                bdt_events["ak8FatJet2NumBMatchedH1"] = events_dict["ak8FatJetNumBMatchedH1"][1]
+                bdt_events["ak8FatJet1NumBMatchedH2"] = events_dict["ak8FatJetNumBMatchedH2"][0]
+                bdt_events["ak8FatJet2NumBMatchedH2"] = events_dict["ak8FatJetNumBMatchedH2"][1]
             bdt_events["ak8FatJet1Eta"] = events_dict["ak8FatJetEta"][0]
             bdt_events["ak8FatJet2Eta"] = events_dict["ak8FatJetEta"][1]
             bdt_events["ak8FatJet3Eta"] = events_dict["ak8FatJetEta"][2]
@@ -895,6 +902,13 @@ def load_process_run3_samples(args, year, bdt_training_keys, control_plots, plot
                     f"ak8FatJet{i}massRes",
                     f"ak8FatJet{i}massVis",
                 ]
+            if ("hh4b" in key) or ("htobb" in key):
+                for i in range(1, 3):
+                    columns += [
+                        f"ak8FatJet{i}HiggsMatch",
+                        f"ak8FatJet{i}NumBMatchedH1",
+                        f"ak8FatJet{i}NumBMatchedH2",
+                    ]
             if key != "data":
                 columns.append("trigger_weight")
         for jshift in jshifts:
