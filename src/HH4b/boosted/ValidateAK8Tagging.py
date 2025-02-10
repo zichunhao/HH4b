@@ -16,6 +16,7 @@ from sklearn.metrics import auc, roc_curve
 import HH4b.utils as utils
 from HH4b import plotting
 from HH4b.log_utils import log_config
+import pickle
 
 log_config["root"]["level"] = "INFO"
 logging.config.dictConfig(log_config)
@@ -252,6 +253,11 @@ def get_roc(
     y_true = np.concatenate(y_true_arr)
     scores = np.concatenate(scores_arr)
     weights = np.concatenate(weights_arr)
+    # Filter out NaNs
+    mask_scores = ~np.isnan(scores) & ~np.isnan(weights)
+    y_true = y_true[mask_scores]
+    scores = scores[mask_scores]
+    weights = weights[mask_scores]
     fpr, tpr, thresholds = roc_curve(y_true, scores, sample_weight=weights)
     auc_label = ""
     try:
@@ -289,7 +295,7 @@ def main(args):
     outdir = "24Dec13"  # date of plotting
     # plot_dir = f"/uscms/home/cmantill/nobackup/hh/HH4b/plots/PostProcessing/{outdir}/{year}"
     plot_dir = Path(args.plot_dir)
-    _ = os.system(f"mkdir -p {plot_dir}")
+    plot_dir.mkdir(parents=True, exist_ok=True)
     path_to_dir = f"{MAIN_DIR}/{tag}/"
 
     pt_cut = [int(x) for x in args.pt_cut.split(",")]
@@ -320,6 +326,7 @@ def main(args):
         cut_str += "mregleg" + "-".join(str(x) for x in mreg_cut)
 
     num_jets = 1
+    # jets = [[0], [1], [0, 1]]
     jets = [[0]]
     # num_jets = 2
     # jets = [ [0,1], [0], [1] ]
@@ -334,6 +341,7 @@ def main(args):
         num_jets,
     )
 
+    roc_dict = {}
     for jet_indices in jets:
         rocs = {
             "PNetTXbbLegacy": get_roc(
@@ -385,6 +393,7 @@ def main(args):
             # "ParTTXbb": [0.72],
         }
         bkg_label = "TT" if use_ttbar else "QCD"
+        jet_indices_str = ''.join(str(x) for x in jet_indices)
         plotting.multiROCCurveGrey(
             {"bb": rocs},
             # sig_effs=[0.6],
@@ -394,7 +403,7 @@ def main(args):
             ylim=[1e-4, 1],
             show=True,
             plot_dir=Path(plot_dir),
-            name=f"{jet_collection}{jet_coll_pnet}{bkg_label}ROC{''.join(str(x) for x in jet_indices)}_{cut_str}",
+            name=f"{jet_collection}{jet_coll_pnet}{bkg_label}ROC{jet_indices_str}_{cut_str}",
             title=(
                 f"AK8 Jets {jet_indices}, {bkg_label}"
                 if jet_collection == "ak8FatJet"
@@ -404,6 +413,12 @@ def main(args):
             plot_thresholds=plot_thresholds,
             find_from_sigeff=find_from_sigeff,
         )
+        roc_dict[jet_indices_str] = {
+            "bkg_label": bkg_label,
+            "rocs": rocs,
+        }
+        with open(plot_dir / "rocs.pkl", 'wb') as file:
+            pickle.dump(roc_dict, file)
 
 
 if __name__ == "__main__":
